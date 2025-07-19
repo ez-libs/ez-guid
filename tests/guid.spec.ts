@@ -66,13 +66,17 @@ describe("Guid", () => {
     });
 
     it("should generate unique GUIDs only", () => {
-        const guids: Array<Guid> = [];
+        // collect GUIDs as strings to easily check for duplicates
+        const guids: Array<string> = [];
         for (let index: number = 0; index < 3000; index++) {
-            guids.push(Guid.create());
+            const next = Guid.create().toString();
+            // ensure the generated GUID is not already present
+            expect(guids.includes(next)).equal(false);
+            guids.push(next);
         }
-        expect(guids.indexOf(guids[0]) < 0).equal(false);
 
-        expect(guids.indexOf(Guid.create()) < 0).equal(true);
+        // final sanity check using the Set API to verify that no duplicates slipped in
+        expect(guids.length).equal(new Set(guids).size);
     });
 
     it("should not care about GUID case at all", () => {
