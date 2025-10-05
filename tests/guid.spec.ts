@@ -68,15 +68,19 @@ describe("Guid", () => {
     it("should generate unique GUIDs only", () => {
         // collect GUIDs as strings to easily check for duplicates
         const guids: Array<string> = [];
+        const guidSet = new Set<string>();
         for (let index: number = 0; index < 3000; index++) {
             const next = Guid.create().toString();
             // ensure the generated GUID is not already present
-            expect(guids.includes(next)).equal(false);
+            expect(guidSet.has(next)).equal(false);
+            // set preferred over an array for performance reasons
+            //expect(guids.includes(next)).equal(false);
+            guidSet.add(next);
             guids.push(next);
         }
 
         // final sanity check using the Set API to verify that no duplicates slipped in
-        expect(guids.length).equal(new Set(guids).size);
+        expect(guids.length).equal(guidSet.size);
     });
 
     it("should not care about GUID case at all", () => {
