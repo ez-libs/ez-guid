@@ -72,7 +72,7 @@ describe("Guid", () => {
         for (let index: number = 0; index < 3000; index++) {
             const next = Guid.create().toString();
             // ensure the generated GUID is not already present
-            expect(guidSet.has(next)).equal(false);
+            expect(guidSet.has(next)).to.be.false;
             // set preferred over an array for performance reasons
             //expect(guids.includes(next)).equal(false);
             guidSet.add(next);
